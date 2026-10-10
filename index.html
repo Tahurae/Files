@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>جامع الکامل — حدیث کی جامع کتاب</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/htmx.org@1.9.12/dist/htmx.min.js" defer></script>
+<style>
+  :root{
+    --bg:#fafaf7; --fg:#1a1a1a; --muted:#6b6b6b; --line:#e5e3dc;
+    --card:#ffffff; --accent:#0d2a4a; --gold:#8b6914; --green:#1f6b3a;
+    --hover:#f3f1ea; --shadow:0 1px 2px rgba(0,0,0,.04),0 4px 12px rgba(0,0,0,.04);
+    --radius:10px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);
+    font-family:'Inter','Amiri',system-ui,-apple-system,sans-serif;
+    font-size:15px;line-height:1.7}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  header{position:sticky;top:0;z-index:10;background:rgba(250,250,247,.92);
+    backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid var(--line)}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+  .head{display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding:14px 0}
+  .brand{display:flex;flex-direction:column;gap:2px}
+  .brand h1{margin:0;font-family:'Amiri',serif;font-weight:700;font-size:24px;
+    color:var(--accent);letter-spacing:.2px}
+  .brand span{font-size:12px;color:var(--muted)}
+  .meta{font-size:12px;color:var(--muted);text-align:left;font-variant-numeric:tabular-nums}
+
+  main{padding:24px 0 80px}
+
+  .searchbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .searchbar input[type=search],.searchbar select{
+    appearance:none;border:1px solid var(--line);background:var(--card);
+    padding:10px 14px;border-radius:var(--radius);font:inherit;
+    font-family:'Amiri',serif;color:var(--fg);outline:none;transition:.15s}
+  .searchbar input[type=search]{flex:1;min-width:220px}
+  .searchbar input[type=search]:focus,.searchbar select:focus{
+    border-color:var(--accent);box-shadow:0 0 0 3px rgba(13,42,74,.08)}
+  .searchbar select{cursor:pointer;min-width:180px}
+
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+  .chip{border:1px solid var(--line);background:var(--card);border-radius:999px;
+    padding:4px 12px;font-size:12.5px;color:var(--muted);cursor:pointer;
+    font-family:'Amiri',serif;transition:.15s}
+  .chip:hover{background:var(--hover);color:var(--fg)}
+  .chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+  .stats{font-size:13px;color:var(--muted);margin-bottom:14px;
+    font-variant-numeric:tabular-nums}
+
+  .list{display:flex;flex-direction:column;gap:14px}
+  .hadith{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:20px 22px;box-shadow:var(--shadow);transition:.15s}
+  .hadith:hover{border-color:#cfcbc0}
+  .h-head{display:flex;justify-content:space-between;align-items:center;
+    gap:12px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px dashed var(--line)}
+  .h-num{font-family:'Amiri',serif;font-weight:700;color:var(--gold);font-size:14px}
+  .h-ref{font-size:12px;color:var(--muted);font-family:'Amiri',serif;text-align:left}
+  .badge{display:inline-block;padding:2px 10px;border-radius:999px;
+    background:#eaf3ee;color:var(--green);font-size:11.5px;font-family:'Amiri',serif}
+
+  .quran{font-family:'Amiri',serif;font-size:17px;line-height:2.1;color:var(--green);
+    text-align:center;margin:6px 0 12px;padding:10px 14px;background:#f5faf6;
+    border-radius:8px}
+  .ar{font-family:'Amiri',serif;font-size:17px;line-height:2.15;margin:6px 0}
+  .ur{font-family:'Amiri',serif;font-size:15.5px;line-height:2;color:#262626;
+    margin:8px 0 0}
+  .meta-line{margin-top:12px;font-size:12px;color:var(--muted);
+    font-family:'Amiri',serif;line-height:1.9}
+  .meta-line b{color:var(--fg)}
+
+  mark{background:#fff3b0;padding:0 2px;border-radius:3px;color:inherit}
+
+  .load{display:flex;justify-content:center;padding:24px 0}
+  .load button{appearance:none;border:1px solid var(--line);background:var(--card);
+    padding:10px 22px;border-radius:var(--radius);cursor:pointer;font:inherit;
+    font-family:'Amiri',serif;color:var(--fg);transition:.15s}
+  .load button:hover{background:var(--hover)}
+
+  .empty{text-align:center;color:var(--muted);padding:60px 20px;
+    font-family:'Amiri',serif;font-size:16px}
+
+  footer{border-top:1px solid var(--line);padding:24px 0;text-align:center;
+    color:var(--muted);font-size:12.5px;font-family:'Amiri',serif}
+
+  @media (max-width:640px){
+    .brand h1{font-size:20px}
+    .hadith{padding:16px}
+    .ar{font-size:16px}
+    .ur{font-size:14.5px}
+  }
+  .htmx-indicator{opacity:0;transition:opacity .2s}
+  .htmx-request .htmx-indicator{opacity:1}
+  .htmx-request.htmx-indicator{opacity:1}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap head">
+    <div class="brand">
+      <h1>جامع الکامل</h1>
+      <span>حدیث کی جامع کتاب — امام ضیاء الرحمن اعظمی</span>
+    </div>
+    <div class="meta" id="meta">…</div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- Advanced Search -->
+  <form id="searchForm"
+        hx-get="search"
+        hx-target="#results"
+        hx-trigger="input changed delay:250ms from:input, change from:select, click from:.chip"
+        hx-swap="innerHTML"
+        hx-indicator="#spinner"
+        onsubmit="return false"
+        class="searchbar">
+    <input type="search" name="q" id="q"
+           placeholder="تلاش کریں: متن، راوی، حوالہ …" autocomplete="off" autofocus>
+    <select name="book" id="book"><option value="">تمام کتابیں</option></select>
+    <select name="field" id="field">
+      <option value="all">ہر جگہ</option>
+      <option value="ar">عربی متن</option>
+      <option value="ur">اردو ترجمہ</option>
+      <option value="q">قرآنی آیات</option>
+      <option value="rf">حوالہ جات</option>
+      <option value="dt">تفصیل</option>
+    </select>
+    <select name="auth" id="auth">
+      <option value="">تمام درجات</option>
+      <option value="صحيح">صحيح</option>
+      <option value="حسن">حسن</option>
+      <option value="متفق عليه">متفق عليه</option>
+      <option value="ضعيف">ضعيف</option>
+    </select>
+    <input type="hidden" name="page" id="page" value="1">
+    <input type="hidden" name="append" id="append" value="">
+  </form>
+
+  <!-- Quick chips -->
+  <div class="chips" id="chips">
+    <span class="chip" data-auth="متفق عليه">متفق عليه</span>
+    <span class="chip" data-auth="صحيح">صحيح</span>
+    <span class="chip" data-auth="حسن">حسن</span>
+    <span class="chip" data-book="60">تفسیر</span>
+    <span class="chip" data-book="48">سیرت</span>
+    <span class="chip" data-book="2">ایمان</span>
+    <span class="chip" data-book="9">نماز</span>
+    <span class="chip" data-book="67">جنت و جہنم</span>
+    <span class="chip clear" data-clear="1">صاف کریں</span>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <div id="spinner" class="htmx-indicator load">
+    <div style="color:var(--muted);font-family:'Amiri',serif">لوڈ ہو رہا ہے…</div>
+  </div>
+
+  <div id="results" class="list">
+    <div class="empty">لوڈ ہو رہا ہے…</div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    کل <strong id="f-total">—</strong> احادیث · <strong id="f-books">—</strong> کتابیں
+    · <a href="data.json" download>ڈیٹا ڈاؤن لوڈ کریں</a>
+  </div>
+</footer>
+
+<script>
+/* --------------------------------------------------------------
+   Client-side engine — data.json loaded once, then filtered live.
+   Uses HTMX's `htmx:configRequest` hook so the same markup also
+   works if you later swap in a real server. Here the "response"
+   is synthesised locally as an HTML string.
+   -------------------------------------------------------------- */
+let DB = null;
+const PAGE_SIZE = 30;
+let currentState = { q:"", book:"", field:"all", auth:"", page:1, append:false };
+
+const $ = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
+
+/* Hijack HTMX to serve local rendering */
+document.body.addEventListener("htmx:configRequest", (e) => {
+  e.preventDefault();
+  const form = $("#searchForm");
+  const fd = new FormData(form);
+  currentState.q      = (fd.get("q")||"").trim();
+  currentState.book   = fd.get("book")||"";
+  currentState.field  = fd.get("field")||"all";
+  currentState.auth   = fd.get("auth")||"";
+  currentState.page   = parseInt(fd.get("page")||"1",10);
+  currentState.append = fd.get("append")==="1";
+  const html = render(currentState);
+  const target = $("#results");
+  if (currentState.append) target.insertAdjacentHTML("beforeend", html);
+  else                     target.innerHTML = html;
+  $("#page").value = currentState.page;
+});
+
+/* Remove HTMX's swap since we already did it */
+document.body.addEventListener("htmx:beforeSwap", e => { e.detail.shouldSwap = false; e.detail.isError = false; });
+
+/* Boot */
+(async function(){
+  try{
+    const res = await fetch("data.json");
+    DB = await res.json();
+  }catch(err){
+    $("#results").innerHTML = `<div class="empty">data.json لوڈ نہیں ہو سکا</div>`;
+    return;
+  }
+  $("#meta").textContent = `${DB.meta.total.toLocaleString()} احادیث · ${DB.meta.books} کتابیں`;
+  $("#f-total").textContent = DB.meta.total.toLocaleString();
+  $("#f-books").textContent = DB.meta.books;
+
+  const sel = $("#book");
+  for(const b of DB.books){
+    const o = document.createElement("option");
+    o.value = b.n;
+    o.textContent = `${b.n}. ${b.name} (${b.count})`;
+    sel.appendChild(o);
+  }
+
+  // initial render
+  const html = render(currentState);
+  $("#results").innerHTML = html;
+})();
+
+/* ---------- filtering + rendering ---------- */
+function normalize(s){
+  return (s||"")
+    .replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/g,"")  // Arabic diacritics
+    .replace(/[إأآٱ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه")
+    .replace(/[ؤئ]/g,"ء")
+    .toLowerCase();
+}
+
+function escapeHTML(s){
+  return (s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+function highlight(text, terms){
+  let out = escapeHTML(text);
+  if(!terms.length) return out;
+  for(const t of terms){
+    if(!t) continue;
+    const re = new RegExp("("+t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","gi");
+    out = out.replace(re, "<mark>$1</mark>");
+  }
+  return out;
+}
+
+function matches(h, terms, field, auth){
+  if(auth && !h.au.includes(auth)) return false;
+  if(!terms.length) return true;
+  const pools = {
+    ar:h.ar, ur:h.ur, q:h.q, rf:h.rf, dt:h.dt,
+    all: [h.ar,h.ur,h.q,h.rf,h.dt,h.au,h.ch].join(" ")
+  };
+  const hay = normalize(pools[field] || pools.all);
+  for(const t of terms){ if(!hay.includes(t)) return false; }
+  return true;
+}
+
+function render(state){
+  if(!DB) return "";
+  const q = state.q;
+  const rawTerms = q.split(/\s+/).filter(Boolean);
+  const terms = rawTerms.map(normalize);
+
+  const bookN = state.book ? parseInt(state.book,10) : null;
+
+  const hits = DB.hadiths.filter(h => {
+    if(bookN && h.b !== bookN) return false;
+    return matches(h, terms, state.field, state.auth);
+  });
+
+  const total = hits.length;
+  const start = state.append ? (state.page-1)*PAGE_SIZE : 0;
+  const slice = hits.slice(start, start+PAGE_SIZE);
+
+  // stats (only on fresh search)
+  if(!state.append){
+    const s = $("#stats");
+    if(q || bookN || state.auth){
+      s.textContent = `${total.toLocaleString()} نتائج`;
+    } else {
+      s.textContent = `تمام ${DB.meta.total.toLocaleString()} احادیث`;
+    }
+  }
+
+  if(!slice.length && !state.append){
+    return `<div class="empty">کوئی نتیجہ نہیں ملا</div>`;
+  }
+
+  let html = slice.map(h => {
+    const ar  = terms.length && (state.field==="all"||state.field==="ar") ? highlight(h.ar, rawTerms) : escapeHTML(h.ar);
+    const ur  = terms.length && (state.field==="all"||state.field==="ur") ? highlight(h.ur, rawTerms) : escapeHTML(h.ur);
+    const qq  = h.q  ? `<div class="quran">${escapeHTML(h.q)}</div>` : "";
+    const au  = h.au ? `<span class="badge">${escapeHTML(h.au)}</span>` : "";
+    const rf  = h.rf ? `<div class="meta-line"><b>حوالہ:</b> ${escapeHTML(h.rf)}</div>` : "";
+    const dt  = h.dt ? `<div class="meta-line"><b>تفصیل:</b> ${escapeHTML(h.dt)}</div>` : "";
+    return `<article class="hadith" id="h-${h.h}">
+      <div class="h-head">
+        <span class="h-num">حدیث نمبر ${h.h}</span>
+        <span class="h-ref">${escapeHTML(h.ch)} · کتاب ${h.b}</span>
+      </div>
+      ${qq}
+      ${ar ? `<div class="ar">${ar}</div>` : ""}
+      ${ur ? `<div class="ur">${ur}</div>` : ""}
+      ${au ? `<div style="margin-top:10px">${au}</div>` : ""}
+      ${rf}${dt}
+    </article>`;
+  }).join("");
+
+  // load more button
+  const shown = start + slice.length;
+  if(shown < total){
+    html += `<div class="load">
+      <button hx-get="search"
+              hx-target="#results"
+              hx-swap="innerHTML"
+              hx-indicator="#spinner"
+              onclick="loadMore(${state.page+1})">مزید دکھائیں (${shown.toLocaleString()} / ${total.toLocaleString()})</button>
+    </div>`;
+  }
+
+  return html;
+}
+
+function loadMore(page){
+  $("#page").value = page;
+  $("#append").value = "1";
+  // trigger HTMX request
+  htmx.trigger("#searchForm","change");
+  $("#append").value = "";
+}
+
+/* chips */
+$$(".chip").forEach(ch => ch.addEventListener("click", () => {
+  if(ch.dataset.clear){
+    $("#q").value=""; $("#book").value=""; $("#auth").value=""; $("#field").value="all";
+  } else if(ch.dataset.auth){
+    $("#auth").value = ch.dataset.auth;
+    $("#book").value = "";
+  } else if(ch.dataset.book){
+    $("#book").value = ch.dataset.book;
+    $("#auth").value = "";
+  }
+  currentState.page = 1;
+  htmx.trigger("#searchForm","change");
+}));
+
+/* reset page to 1 on any new search */
+["q","book","field","auth"].forEach(id => {
+  $("#"+id).addEventListener("input", () => { $("#page").value = 1; });
+  $("#"+id).addEventListener("change", () => { $("#page").value = 1; });
+});
+</script>
+</body>
+</html>
